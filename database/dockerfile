@@ -1,0 +1,9 @@
+FROM postgres:17
+
+ENV POSTGRES_USER=postgres
+ENV POSTGRES_PASSWORD=postgres
+ENV POSTGRES_DB=cookbook
+
+COPY init-db /docker-entrypoint-initdb.d/
+
+EXPOSE 5432
