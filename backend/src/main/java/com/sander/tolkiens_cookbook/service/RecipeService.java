@@ -1,26 +1,61 @@
 package com.sander.tolkiens_cookbook.service;
 
+import com.sander.tolkiens_cookbook.dto.RecipeDTO;
+import com.sander.tolkiens_cookbook.dto.RecipeIngredientDTO;
 import com.sander.tolkiens_cookbook.entity.Recipe;
-import com.sander.tolkiens_cookbook.dao.RecipeRepository;
+import com.sander.tolkiens_cookbook.repository.RecipeIngredientRepository;
+import com.sander.tolkiens_cookbook.repository.RecipeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class RecipeService {
-    private final RecipeRepository recipeRepository;
+    @Autowired
+    private RecipeRepository recipeRepository;
 
-    public RecipeService(RecipeRepository recipeRepository) {
-        this.recipeRepository = recipeRepository;
+    @Autowired
+    private RecipeIngredientRepository recipeIngredientRepository;
+
+    public List<RecipeDTO> getAllRecipes() {
+        List<Recipe> recipes = recipeRepository.findAll();
+        return recipes.stream().map(recipe -> {
+            List<RecipeIngredientDTO> recipeIngredients = recipe.getIngredients().stream()
+                    .map(recipeIngredient -> new RecipeIngredientDTO(
+                            recipeIngredient.getQuantity(),
+                            recipeIngredient.getIngredient().getId()  // Assuming RecipeIngredient has a reference to Ingredient
+                    ))
+                    .collect(Collectors.toList());
+
+            return new RecipeDTO(
+                    recipe.getId(),
+                    recipe.getName(),
+                    recipe.getServings(),
+                    recipeIngredients
+            );
+        }).collect(Collectors.toList());
     }
 
-    public List<Recipe> getAllRecipes() {
-        return recipeRepository.findAll();
-    }
+    public RecipeDTO getRecipeById(int id) {
+        Recipe recipe = recipeRepository.findById(id).orElse(null);
+        if (recipe != null) {
+            List<RecipeIngredientDTO> recipeIngredients = recipe.getIngredients().stream()
+                    .map(recipeIngredient -> new RecipeIngredientDTO(
+                            recipeIngredient.getQuantity(),
+                            recipeIngredient.getIngredient().getId()  // Assuming RecipeIngredient has a reference to Ingredient
+                    ))
+                    .collect(Collectors.toList());
 
-    public Optional<Recipe> getRecipeById(int id) {
-        return recipeRepository.findById(id);
+            return new RecipeDTO(
+                    recipe.getId(),
+                    recipe.getName(),
+                    recipe.getServings(),
+                    recipeIngredients
+            );
+        }
+        return null; // ToDO: throw an exception if not found
     }
 
     public Recipe saveRecipe(Recipe recipe) {

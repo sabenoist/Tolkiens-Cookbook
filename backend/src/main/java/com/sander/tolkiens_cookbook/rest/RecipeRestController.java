@@ -1,12 +1,12 @@
 package com.sander.tolkiens_cookbook.rest;
 
+import com.sander.tolkiens_cookbook.dto.RecipeDTO;
 import com.sander.tolkiens_cookbook.entity.Recipe;
 import com.sander.tolkiens_cookbook.service.RecipeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/recipes")
@@ -18,14 +18,13 @@ public class RecipeRestController {
     }
 
     @GetMapping
-    public List<Recipe> getAllRecipes() {
+    public List<RecipeDTO> getAllRecipes() {
         return recipeService.getAllRecipes();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Recipe> getRecipeById(@PathVariable int id) {
-        Optional<Recipe> recipe = recipeService.getRecipeById(id);
-        return recipe.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public RecipeDTO getRecipeById(@PathVariable int id) {
+        return recipeService.getRecipeById(id);
     }
 
     @PostMapping

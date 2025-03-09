@@ -1,9 +1,7 @@
 package com.sander.tolkiens_cookbook.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "recipes")
@@ -41,10 +39,4 @@ public class Recipe {
 
     public Set<RecipeIngredient> getIngredients() { return ingredients; }
     public void setIngredients(Set<RecipeIngredient> ingredients) { this.ingredients = ingredients; }
-
-    // 🔹 This method transforms the list of RecipeIngredient to a list of Ingredient IDs
-   // @JsonProperty("ingredientIds")
-   // public Set<Integer> getIngredientIds() {
-   //     return ingredients.stream().map(RecipeIngredient::getIngredientId).collect(Collectors.toSet());
-   // }
 }

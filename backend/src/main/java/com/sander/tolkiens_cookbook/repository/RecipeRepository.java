@@ -1,4 +1,4 @@
-package com.sander.tolkiens_cookbook.dao;
+package com.sander.tolkiens_cookbook.repository;
 
 import com.sander.tolkiens_cookbook.entity.Recipe;
 import org.springframework.data.jpa.repository.JpaRepository;

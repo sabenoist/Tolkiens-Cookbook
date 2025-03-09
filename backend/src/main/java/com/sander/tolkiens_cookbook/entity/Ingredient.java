@@ -1,6 +1,5 @@
 package com.sander.tolkiens_cookbook.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,7 +21,6 @@ public class Ingredient {
     private Category category;
 
     @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
     private Set<RecipeIngredient> recipes = new HashSet<>();
 
     public Ingredient() {}

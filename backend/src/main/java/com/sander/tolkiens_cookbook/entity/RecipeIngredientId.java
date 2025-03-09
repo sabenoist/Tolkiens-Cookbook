@@ -1,17 +1,14 @@
 package com.sander.tolkiens_cookbook.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
 public class RecipeIngredientId implements Serializable {
-
-    @JsonIgnore // 🔹 This hides "recipeId" in JSON response
     private int recipeId;
 
-    private int ingredientId; // 🔹 This will still be included
+    private int ingredientId;
 
     public RecipeIngredientId() {}
 
