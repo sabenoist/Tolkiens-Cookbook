@@ -4,6 +4,7 @@ import com.sander.tolkiens_cookbook.dto.IngredientDTO;
 import com.sander.tolkiens_cookbook.entity.Ingredient;
 import com.sander.tolkiens_cookbook.mapper.IngredientMapper;
 import com.sander.tolkiens_cookbook.repository.IngredientRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,11 +13,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class IngredientService {
-    private final IngredientRepository ingredientRepository;
-
-    public IngredientService(IngredientRepository ingredientRepository) {
-        this.ingredientRepository = ingredientRepository;
-    }
+    @Autowired
+    private IngredientRepository ingredientRepository;
 
     public List<IngredientDTO> getAllIngredients() {
         List<Ingredient> ingredients = ingredientRepository.findAll();
@@ -37,7 +35,7 @@ public class IngredientService {
                     ingredient.isVegetarian()
             );
         }
-        return null; // or throw an exception if not found
+        return null; // ToDo: throw an exception if not found
     }
 
     public Ingredient getIngredientByName(String name) {

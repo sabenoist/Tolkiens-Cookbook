@@ -30,10 +30,16 @@ public class RecipeService {
                     ))
                     .collect(Collectors.toList());
 
+            // Check if all ingredients are vegetarian
+            boolean isVegetarian = recipe.getIngredients().stream()
+                    .allMatch(recipeIngredient -> recipeIngredient.getIngredient().isVegetarian());
+
+            // Return RecipeDTO
             return new RecipeDTO(
                     recipe.getId(),
                     recipe.getName(),
                     recipe.getServings(),
+                    isVegetarian,
                     recipeIngredients
             );
         }).collect(Collectors.toList());
@@ -50,10 +56,16 @@ public class RecipeService {
                     ))
                     .collect(Collectors.toList());
 
+            // Check if all ingredients are vegetarian
+            boolean isVegetarian = recipe.getIngredients().stream()
+                    .allMatch(recipeIngredient -> recipeIngredient.getIngredient().isVegetarian());
+
+            // Return RecipeDTO
             return new RecipeDTO(
                     recipe.getId(),
                     recipe.getName(),
                     recipe.getServings(),
+                    isVegetarian,
                     recipeIngredients
             );
         }

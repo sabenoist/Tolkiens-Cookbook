@@ -5,14 +5,16 @@ import java.util.List;
 public class RecipeDTO {
     private int id;
     private String name;
-    private int servings; // Include servings
+    private int servings;
+    private boolean vegetarian;
     private List<RecipeIngredientDTO> ingredients; // List of ingredients
 
     // Constructor
-    public RecipeDTO(int id, String name, int servings, List<RecipeIngredientDTO> ingredients) {
+    public RecipeDTO(int id, String name, int servings, boolean vegetarian, List<RecipeIngredientDTO> ingredients) {
         this.id = id;
         this.name = name;
         this.servings = servings;
+        this.vegetarian = vegetarian;
         this.ingredients = ingredients;
     }
 
@@ -25,6 +27,9 @@ public class RecipeDTO {
 
     public int getServings() { return servings; }
     public void setServings(int servings) { this.servings = servings; }
+
+    public boolean isVegetarian() { return vegetarian; }
+    public void setVegetarian(boolean vegetarian) { this.vegetarian = vegetarian; }
 
     public List<RecipeIngredientDTO> getIngredients() { return ingredients; }
     public void setIngredients(List<RecipeIngredientDTO> ingredients) { this.ingredients = ingredients; }
