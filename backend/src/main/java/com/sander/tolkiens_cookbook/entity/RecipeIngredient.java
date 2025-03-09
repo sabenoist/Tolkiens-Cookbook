@@ -18,7 +18,7 @@ public class RecipeIngredient {
     @JoinColumn(name = "ingredient_id", nullable = false)
     private Ingredient ingredient;
 
-    @Column(nullable = false)
+    @Column(name = "quantity", nullable = false)
     private String quantity;
 
     // Constructors

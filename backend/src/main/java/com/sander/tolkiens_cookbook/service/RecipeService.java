@@ -9,7 +9,6 @@ import java.util.Optional;
 
 @Service
 public class RecipeService {
-
     private final RecipeRepository recipeRepository;
 
     public RecipeService(RecipeRepository recipeRepository) {
@@ -28,7 +27,7 @@ public class RecipeService {
         return recipeRepository.save(recipe);
     }
 
-    public void deleteRecipe(int id) {
+    public void deleteRecipe(int  id) {
         recipeRepository.deleteById(id);
     }
 }

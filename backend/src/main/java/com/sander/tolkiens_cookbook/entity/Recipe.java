@@ -16,13 +16,27 @@ public class Recipe {
     @Column(name = "recipe_name", nullable = false, unique = true)
     private String name;
 
+    @Column(name = "servings", nullable = false)
+    private int servings;
+
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<RecipeIngredient> ingredients = new HashSet<>();
 
     public Recipe() {}
 
-    public Recipe(String name) {
+    public Recipe(String name, int servings) {
         this.name = name;
+        this.servings = servings;
+    }
+
+    public void addIngredient(RecipeIngredient recipeIngredient) {
+        ingredients.add(recipeIngredient);
+        recipeIngredient.setRecipe(this);
+    }
+
+    public void removeIngredient(RecipeIngredient recipeIngredient) {
+        ingredients.remove(recipeIngredient);
+        recipeIngredient.setRecipe(null);
     }
 
     public int getId() { return id; }
@@ -30,6 +44,9 @@ public class Recipe {
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
+
+    public int getServings() { return servings; }
+    public void setServings(int servings) { this.servings = servings; }
 
     public Set<RecipeIngredient> getIngredients() { return ingredients; }
     public void setIngredients(Set<RecipeIngredient> ingredients) { this.ingredients = ingredients; }
