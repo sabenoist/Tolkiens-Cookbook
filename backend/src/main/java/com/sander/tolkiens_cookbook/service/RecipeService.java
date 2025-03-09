@@ -22,10 +22,11 @@ public class RecipeService {
     public List<RecipeDTO> getAllRecipes() {
         List<Recipe> recipes = recipeRepository.findAll();
         return recipes.stream().map(recipe -> {
+            // Map each Recipe entity to a RecipeDTO
             List<RecipeIngredientDTO> recipeIngredients = recipe.getIngredients().stream()
                     .map(recipeIngredient -> new RecipeIngredientDTO(
                             recipeIngredient.getQuantity(),
-                            recipeIngredient.getIngredient().getId()  // Assuming RecipeIngredient has a reference to Ingredient
+                            recipeIngredient.getIngredient().getName()
                     ))
                     .collect(Collectors.toList());
 
@@ -41,10 +42,11 @@ public class RecipeService {
     public RecipeDTO getRecipeById(int id) {
         Recipe recipe = recipeRepository.findById(id).orElse(null);
         if (recipe != null) {
+            // Map the RecipeIngredient objects to RecipeIngredientDTOs
             List<RecipeIngredientDTO> recipeIngredients = recipe.getIngredients().stream()
                     .map(recipeIngredient -> new RecipeIngredientDTO(
                             recipeIngredient.getQuantity(),
-                            recipeIngredient.getIngredient().getId()  // Assuming RecipeIngredient has a reference to Ingredient
+                            recipeIngredient.getIngredient().getName()
                     ))
                     .collect(Collectors.toList());
 
