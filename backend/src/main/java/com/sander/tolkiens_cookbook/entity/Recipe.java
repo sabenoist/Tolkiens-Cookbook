@@ -1,8 +1,9 @@
 package com.sander.tolkiens_cookbook.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "recipes")
@@ -20,23 +21,13 @@ public class Recipe {
     private int servings;
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<RecipeIngredient> ingredients = new HashSet<>();
+    private Set<RecipeIngredient> ingredients;
 
     public Recipe() {}
 
     public Recipe(String name, int servings) {
         this.name = name;
         this.servings = servings;
-    }
-
-    public void addIngredient(RecipeIngredient recipeIngredient) {
-        ingredients.add(recipeIngredient);
-        recipeIngredient.setRecipe(this);
-    }
-
-    public void removeIngredient(RecipeIngredient recipeIngredient) {
-        ingredients.remove(recipeIngredient);
-        recipeIngredient.setRecipe(null);
     }
 
     public int getId() { return id; }
@@ -50,4 +41,10 @@ public class Recipe {
 
     public Set<RecipeIngredient> getIngredients() { return ingredients; }
     public void setIngredients(Set<RecipeIngredient> ingredients) { this.ingredients = ingredients; }
+
+    // 🔹 This method transforms the list of RecipeIngredient to a list of Ingredient IDs
+   // @JsonProperty("ingredientIds")
+   // public Set<Integer> getIngredientIds() {
+   //     return ingredients.stream().map(RecipeIngredient::getIngredientId).collect(Collectors.toSet());
+   // }
 }

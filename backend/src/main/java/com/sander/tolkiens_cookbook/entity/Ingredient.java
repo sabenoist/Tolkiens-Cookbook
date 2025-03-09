@@ -1,10 +1,14 @@
 package com.sander.tolkiens_cookbook.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "ingredients")  // Ensure this matches the actual table name in PostgreSQL
+@Table(name = "ingredients")
 public class Ingredient {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ingredient_id")
@@ -17,6 +21,10 @@ public class Ingredient {
     @Column(name = "category", nullable = false)
     private Category category;
 
+    @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private Set<RecipeIngredient> recipes = new HashSet<>();
+
     public Ingredient() {}
 
     public Ingredient(String name, Category category) {
@@ -24,26 +32,17 @@ public class Ingredient {
         this.category = category;
     }
 
-    public int getId() {
-        return id;
-    }
-    public void setId(int id) {
-        this.id = id;
-    }
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    public Category getCategory() {
-        return category;
-    }
-    public void setCategory(Category category) {
-        this.category = category;
-    }
+    public Category getCategory() { return category; }
+    public void setCategory(Category category) { this.category = category; }
+
+    public Set<RecipeIngredient> getRecipes() { return recipes; }
+    public void setRecipes(Set<RecipeIngredient> recipes) { this.recipes = recipes; }
 
     @Transient
     public boolean isVegetarian() {

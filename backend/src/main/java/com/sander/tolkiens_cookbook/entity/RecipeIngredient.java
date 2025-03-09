@@ -1,38 +1,42 @@
 package com.sander.tolkiens_cookbook.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "recipe_ingredients")
 public class RecipeIngredient {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @EmbeddedId
+    @JsonIgnore
+    private RecipeIngredientId id;
 
     @ManyToOne
-    @JoinColumn(name = "recipe_id", nullable = false)
+    @MapsId("recipeId")
+    @JoinColumn(name = "recipe_id")
+    @JsonIgnore  // Prevents infinite recursion by ignoring recipe serialization
     private Recipe recipe;
 
     @ManyToOne
-    @JoinColumn(name = "ingredient_id", nullable = false)
+    @MapsId("ingredientId")
+    @JoinColumn(name = "ingredient_id")
+    @JsonIgnore  // Prevents full ingredient serialization
     private Ingredient ingredient;
 
-    @Column(name = "quantity", nullable = false)
+    @Column(name = "quantity")
     private String quantity;
 
-    // Constructors
     public RecipeIngredient() {}
 
     public RecipeIngredient(Recipe recipe, Ingredient ingredient, String quantity) {
         this.recipe = recipe;
         this.ingredient = ingredient;
         this.quantity = quantity;
+        this.id = new RecipeIngredientId(recipe.getId(), ingredient.getId());
     }
 
-    // Getters & Setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public RecipeIngredientId getId() { return id; }
+    public void setId(RecipeIngredientId id) { this.id = id; }
 
     public Recipe getRecipe() { return recipe; }
     public void setRecipe(Recipe recipe) { this.recipe = recipe; }
@@ -42,4 +46,9 @@ public class RecipeIngredient {
 
     public String getQuantity() { return quantity; }
     public void setQuantity(String quantity) { this.quantity = quantity; }
+
+    // This will return only the ingredient ID in JSON response
+    public int getIngredientId() {
+        return ingredient.getId();
+    }
 }
