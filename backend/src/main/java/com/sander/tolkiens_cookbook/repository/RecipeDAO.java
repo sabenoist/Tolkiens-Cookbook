@@ -20,6 +20,15 @@ public class RecipeDAO {
         return recipeRepository.findById(id);
     }
 
+    public List<Recipe> searchRecipes(List<String> includeIngredients, List<String> excludeIngredients, String keyword) {
+        long includeCount = (includeIngredients != null) ? includeIngredients.size() : 0;
+
+        // Formatting the keyword pattern for SQL LIKE query
+        String keywordPattern = (keyword != null && !keyword.isEmpty()) ? "%" + keyword.toLowerCase() + "%" : null;
+
+        return recipeRepository.searchRecipes(includeIngredients, excludeIngredients, includeCount, keywordPattern);
+    }
+
     public Recipe save(Recipe recipe) {
         return recipeRepository.save(recipe);
     }

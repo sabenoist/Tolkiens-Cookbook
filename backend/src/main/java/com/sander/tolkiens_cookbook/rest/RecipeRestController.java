@@ -6,6 +6,7 @@ import com.sander.tolkiens_cookbook.service.RecipeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -36,5 +37,22 @@ public class RecipeRestController {
     public ResponseEntity<Void> deleteRecipe(@PathVariable int id) {
         recipeService.deleteRecipe(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/search")
+    public List<RecipeDTO> searchRecipes(
+            @RequestParam(required = false) String includeIngredients,
+            @RequestParam(required = false) String excludeIngredients,
+            @RequestParam(required = false) String keyword) {
+
+        List<String> includeList = (includeIngredients != null && !includeIngredients.isEmpty())
+                ? Arrays.asList(includeIngredients.split(","))
+                : null;
+
+        List<String> excludeList = (excludeIngredients != null && !excludeIngredients.isEmpty())
+                ? Arrays.asList(excludeIngredients.split(","))
+                : null;
+
+        return recipeService.searchRecipes(includeList, excludeList, keyword);
     }
 }
