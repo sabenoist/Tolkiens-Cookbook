@@ -1,7 +1,12 @@
 package com.sander.tolkiens_cookbook.model;
 
+import com.sander.tolkiens_cookbook.dto.RecipeIngredientDTO;
+import com.sander.tolkiens_cookbook.mapper.RecipeIngredientMapper;
 import jakarta.persistence.*;
+
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "recipes")
@@ -26,6 +31,19 @@ public class Recipe {
     public Recipe(String name, int servings) {
         this.name = name;
         this.servings = servings;
+    }
+
+    @Transient
+    public boolean isVegetarian() {
+        return this.getIngredients().stream()
+                .allMatch(recipeIngredient -> recipeIngredient.getIngredient().isVegetarian());
+    }
+
+    @Transient
+    public List<RecipeIngredientDTO> getRecipeIngredientsDTO() {
+        return this.getIngredients().stream()
+                .map(RecipeIngredientMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     public int getId() { return id; }

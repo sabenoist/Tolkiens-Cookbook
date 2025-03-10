@@ -25,12 +25,8 @@ public class IngredientService {
 
     public IngredientDTO getIngredientById(int id) {
         Optional<Ingredient> ingredientOpt = ingredientDAO.findById(id);
-        return ingredientOpt.map(ingredient -> new IngredientDTO(
-                ingredient.getId(),
-                ingredient.getName(),
-                ingredient.getCategory().toString(),
-                ingredient.isVegetarian()
-        )).orElse(null); // TODO: Throw an exception if not found
+        return ingredientOpt.map(IngredientMapper::toDTO)
+                .orElse(null); // TODO: Throw an exception if not found
     }
 
     public Ingredient getIngredientByName(String name) {
