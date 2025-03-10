@@ -7,15 +7,17 @@ public class RecipeDTO {
     private String name;
     private int servings;
     private boolean vegetarian;
-    private List<RecipeIngredientDTO> ingredients; // List of ingredients
+    private List<RecipeIngredientDTO> ingredients;
+    private String instructions;
 
     // Constructor
-    public RecipeDTO(int id, String name, int servings, boolean vegetarian, List<RecipeIngredientDTO> ingredients) {
+    public RecipeDTO(int id, String name, int servings, boolean vegetarian, List<RecipeIngredientDTO> ingredients, String instructions) {
         this.id = id;
         this.name = name;
         this.servings = servings;
         this.vegetarian = vegetarian;
         this.ingredients = ingredients;
+        this.instructions = instructions;
     }
 
     // Getters and Setters
@@ -33,4 +35,7 @@ public class RecipeDTO {
 
     public List<RecipeIngredientDTO> getIngredients() { return ingredients; }
     public void setIngredients(List<RecipeIngredientDTO> ingredients) { this.ingredients = ingredients; }
+
+    public String getInstructions() { return instructions; }  // Getter for instructions
+    public void setInstructions(String instructions) { this.instructions = instructions; }  // Setter for instructions
 }

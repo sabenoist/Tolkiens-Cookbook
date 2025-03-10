@@ -11,7 +11,8 @@ public class RecipeMapper {
                 recipe.getName(),
                 recipe.getServings(),
                 recipe.isVegetarian(),
-                recipe.getRecipeIngredientsDTO()
+                recipe.getRecipeIngredientsDTO(),
+                recipe.getInstructions()
         );
     }
 }

@@ -23,6 +23,9 @@ public class Recipe {
     @Column(name = "servings", nullable = false)
     private int servings;
 
+    @Column(name = "instructions", nullable = false, columnDefinition = "TEXT")
+    private String instructions;
+
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<RecipeIngredient> ingredients;
 
@@ -54,6 +57,9 @@ public class Recipe {
 
     public int getServings() { return servings; }
     public void setServings(int servings) { this.servings = servings; }
+
+    public String getInstructions() { return instructions; }
+    public void setInstructions(String instructions) { this.instructions = instructions; }
 
     public Set<RecipeIngredient> getIngredients() { return ingredients; }
     public void setIngredients(Set<RecipeIngredient> ingredients) { this.ingredients = ingredients; }
