@@ -1,4 +1,4 @@
-package com.sander.tolkiens_cookbook.entity;
+package com.sander.tolkiens_cookbook.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

@@ -1,10 +1,9 @@
 package com.sander.tolkiens_cookbook.service;
 
+import com.sander.tolkiens_cookbook.repository.RecipeDAO;
 import com.sander.tolkiens_cookbook.dto.RecipeDTO;
 import com.sander.tolkiens_cookbook.dto.RecipeIngredientDTO;
-import com.sander.tolkiens_cookbook.entity.Recipe;
-import com.sander.tolkiens_cookbook.repository.RecipeIngredientRepository;
-import com.sander.tolkiens_cookbook.repository.RecipeRepository;
+import com.sander.tolkiens_cookbook.model.Recipe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,15 +13,11 @@ import java.util.stream.Collectors;
 @Service
 public class RecipeService {
     @Autowired
-    private RecipeRepository recipeRepository;
-
-    @Autowired
-    private RecipeIngredientRepository recipeIngredientRepository;
+    private RecipeDAO recipeDAO;  // Use DAO instead of Repository
 
     public List<RecipeDTO> getAllRecipes() {
-        List<Recipe> recipes = recipeRepository.findAll();
+        List<Recipe> recipes = recipeDAO.findAll();
         return recipes.stream().map(recipe -> {
-            // Map each Recipe entity to a RecipeDTO
             List<RecipeIngredientDTO> recipeIngredients = recipe.getIngredients().stream()
                     .map(recipeIngredient -> new RecipeIngredientDTO(
                             recipeIngredient.getQuantity(),
@@ -30,11 +25,9 @@ public class RecipeService {
                     ))
                     .collect(Collectors.toList());
 
-            // Check if all ingredients are vegetarian
             boolean isVegetarian = recipe.getIngredients().stream()
                     .allMatch(recipeIngredient -> recipeIngredient.getIngredient().isVegetarian());
 
-            // Return RecipeDTO
             return new RecipeDTO(
                     recipe.getId(),
                     recipe.getName(),
@@ -46,9 +39,7 @@ public class RecipeService {
     }
 
     public RecipeDTO getRecipeById(int id) {
-        Recipe recipe = recipeRepository.findById(id).orElse(null);
-        if (recipe != null) {
-            // Map the RecipeIngredient objects to RecipeIngredientDTOs
+        return recipeDAO.findById(id).map(recipe -> {
             List<RecipeIngredientDTO> recipeIngredients = recipe.getIngredients().stream()
                     .map(recipeIngredient -> new RecipeIngredientDTO(
                             recipeIngredient.getQuantity(),
@@ -56,11 +47,9 @@ public class RecipeService {
                     ))
                     .collect(Collectors.toList());
 
-            // Check if all ingredients are vegetarian
             boolean isVegetarian = recipe.getIngredients().stream()
                     .allMatch(recipeIngredient -> recipeIngredient.getIngredient().isVegetarian());
 
-            // Return RecipeDTO
             return new RecipeDTO(
                     recipe.getId(),
                     recipe.getName(),
@@ -68,15 +57,14 @@ public class RecipeService {
                     isVegetarian,
                     recipeIngredients
             );
-        }
-        return null; // ToDO: throw an exception if not found
+        }).orElse(null); // ToDO: throw an exception if not found
     }
 
     public Recipe saveRecipe(Recipe recipe) {
-        return recipeRepository.save(recipe);
+        return recipeDAO.save(recipe);
     }
 
-    public void deleteRecipe(int  id) {
-        recipeRepository.deleteById(id);
+    public void deleteRecipe(int id) {
+        recipeDAO.deleteById(id);
     }
 }

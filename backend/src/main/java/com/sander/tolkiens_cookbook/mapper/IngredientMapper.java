@@ -1,6 +1,6 @@
 package com.sander.tolkiens_cookbook.mapper;
 
-import com.sander.tolkiens_cookbook.entity.Ingredient;
+import com.sander.tolkiens_cookbook.model.Ingredient;
 import com.sander.tolkiens_cookbook.dto.IngredientDTO;
 
 public class IngredientMapper {

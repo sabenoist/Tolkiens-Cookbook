@@ -1,4 +1,4 @@
-package com.sander.tolkiens_cookbook.entity;
+package com.sander.tolkiens_cookbook.model;
 
 import jakarta.persistence.*;
 import java.util.Set;

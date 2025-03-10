@@ -1,7 +1,7 @@
 package com.sander.tolkiens_cookbook.rest;
 
 import com.sander.tolkiens_cookbook.dto.RecipeDTO;
-import com.sander.tolkiens_cookbook.entity.Recipe;
+import com.sander.tolkiens_cookbook.model.Recipe;
 import com.sander.tolkiens_cookbook.service.RecipeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

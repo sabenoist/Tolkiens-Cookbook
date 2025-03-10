@@ -1,4 +1,4 @@
-package com.sander.tolkiens_cookbook.entity;
+package com.sander.tolkiens_cookbook.model;
 
 public enum Category {
     MEAT,
