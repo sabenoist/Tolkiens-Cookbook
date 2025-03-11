@@ -43,7 +43,8 @@ public class RecipeRestController {
     public List<RecipeDTO> searchRecipes(
             @RequestParam(required = false) String includeIngredients,
             @RequestParam(required = false) String excludeIngredients,
-            @RequestParam(required = false) String keyword) {
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) String isVegetarian) {
 
         List<String> includeList = (includeIngredients != null && !includeIngredients.isEmpty())
                 ? Arrays.asList(includeIngredients.split(","))
@@ -53,6 +54,11 @@ public class RecipeRestController {
                 ? Arrays.asList(excludeIngredients.split(","))
                 : null;
 
-        return recipeService.searchRecipes(includeList, excludeList, keyword);
+        Boolean vegetarian = null;
+        if (isVegetarian != null) {
+            vegetarian = Boolean.parseBoolean(isVegetarian);
+        }
+
+        return recipeService.searchRecipes(includeList, excludeList, keyword, vegetarian);
     }
 }
