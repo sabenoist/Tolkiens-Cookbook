@@ -1,5 +1,6 @@
 package com.sander.tolkiens_cookbook.service;
 
+import com.sander.tolkiens_cookbook.exception.ResourceNotFoundException;
 import com.sander.tolkiens_cookbook.mapper.RecipeMapper;
 import com.sander.tolkiens_cookbook.repository.RecipeDAO;
 import com.sander.tolkiens_cookbook.dto.RecipeDTO;
@@ -26,7 +27,7 @@ public class RecipeService {
     public RecipeDTO getRecipeById(int id) {
         return recipeDAO.findById(id)
                 .map(RecipeMapper::toDTO)
-                .orElse(null); // ToDo: throw an exception if not found
+                .orElseThrow(() -> new ResourceNotFoundException("Recipe with ID " + id + " not found"));
     }
 
     public List<RecipeDTO> searchRecipes(List<String> includeIngredients,
