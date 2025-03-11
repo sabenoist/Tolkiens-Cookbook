@@ -10,8 +10,8 @@ import org.springframework.data.repository.query.Param;
 
 @Repository
 public interface RecipeIngredientRepository extends JpaRepository<RecipeIngredient, Integer> {
-    @Transactional
     @Modifying
+    @Transactional
     @Query("DELETE FROM RecipeIngredient ri WHERE ri.recipe.id = :recipeId")
     void deleteByRecipeId(@Param("recipeId") int recipeId);
 }

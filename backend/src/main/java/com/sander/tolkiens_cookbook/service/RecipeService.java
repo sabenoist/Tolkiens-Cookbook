@@ -57,6 +57,12 @@ public class RecipeService {
         return RecipeMapper.toDTO(recipeDAO.save(recipe));
     }
 
+    @Transactional
+    public RecipeDTO updateRecipe(int id, Recipe updatedRecipe) {
+        return RecipeMapper.toDTO(recipeDAO.update(id, updatedRecipe));
+    }
+
+    @Transactional
     public void deleteRecipe(int id) {
         recipeDAO.deleteById(id);
     }

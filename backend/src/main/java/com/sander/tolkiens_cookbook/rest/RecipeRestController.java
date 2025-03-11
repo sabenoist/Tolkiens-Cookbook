@@ -2,6 +2,7 @@ package com.sander.tolkiens_cookbook.rest;
 
 import com.sander.tolkiens_cookbook.dto.RecipeDTO;
 import com.sander.tolkiens_cookbook.model.Recipe;
+import com.sander.tolkiens_cookbook.model.RecipeIngredient;
 import com.sander.tolkiens_cookbook.service.RecipeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,11 @@ public class RecipeRestController {
     @PostMapping
     public RecipeDTO createRecipe(@RequestBody Recipe recipe) {
         return recipeService.save(recipe);
+    }
+
+    @PutMapping("/{id}")
+    public RecipeDTO updateRecipe(@PathVariable int id, @RequestBody Recipe updatedRecipe) {
+        return recipeService.updateRecipe(id, updatedRecipe);
     }
 
     @DeleteMapping("/{id}")

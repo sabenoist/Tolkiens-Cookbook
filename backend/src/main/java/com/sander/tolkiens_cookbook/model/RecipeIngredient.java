@@ -1,26 +1,24 @@
 package com.sander.tolkiens_cookbook.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
+import java.util.Objects;
 
 @Entity
 @Table(name = "recipe_ingredients")
 public class RecipeIngredient {
 
     @EmbeddedId
-    //@JsonIgnore
     private RecipeIngredientId id;
 
     @ManyToOne
     @MapsId("recipeId")
     @JoinColumn(name = "recipe_id")
-    //@JsonIgnore  // Prevents infinite recursion by ignoring recipe serialization
     private Recipe recipe;
 
     @ManyToOne
     @MapsId("ingredientId")
     @JoinColumn(name = "ingredient_id")
-    //@JsonIgnore  // Prevents full ingredient serialization
     private Ingredient ingredient;
 
     @Column(name = "quantity")
@@ -49,5 +47,18 @@ public class RecipeIngredient {
 
     public int getIngredientId() {
         return ingredient.getId();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RecipeIngredient that = (RecipeIngredient) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

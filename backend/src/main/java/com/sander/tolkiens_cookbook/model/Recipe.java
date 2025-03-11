@@ -4,6 +4,8 @@ import com.sander.tolkiens_cookbook.dto.RecipeIngredientDTO;
 import com.sander.tolkiens_cookbook.mapper.RecipeIngredientMapper;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -26,9 +28,9 @@ public class Recipe {
     @Column(name = "instructions", nullable = false, columnDefinition = "TEXT")
     private String instructions;
 
-    @OneToMany(mappedBy = "recipe", orphanRemoval = true)
+    @OneToMany(mappedBy = "recipe")
     //@OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<RecipeIngredient> ingredients;
+    private List<RecipeIngredient> ingredients = new ArrayList<>();
 
     public Recipe() {}
 
@@ -62,6 +64,6 @@ public class Recipe {
     public String getInstructions() { return instructions; }
     public void setInstructions(String instructions) { this.instructions = instructions; }
 
-    public Set<RecipeIngredient> getIngredients() { return ingredients; }
-    public void setIngredients(Set<RecipeIngredient> ingredients) { this.ingredients = ingredients; }
+    public List<RecipeIngredient> getIngredients() { return ingredients; }
+    public void setIngredients(List<RecipeIngredient> ingredients) { this.ingredients = ingredients; }
 }

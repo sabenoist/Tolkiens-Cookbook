@@ -1,5 +1,6 @@
 package com.sander.tolkiens_cookbook.repository;
 
+import com.sander.tolkiens_cookbook.exception.ResourceNotFoundException;
 import com.sander.tolkiens_cookbook.model.Ingredient;
 import com.sander.tolkiens_cookbook.model.Recipe;
 import com.sander.tolkiens_cookbook.model.RecipeIngredient;
@@ -8,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Repository
 public class RecipeDAO {
@@ -44,40 +42,79 @@ public class RecipeDAO {
     @Transactional
     public Recipe save(Recipe recipe) {
         // Temporarily store RecipeIngredients
-        Set<RecipeIngredient> ingredients = recipe.getIngredients();
+        List<RecipeIngredient> ingredients = recipe.getIngredients(); // Now as List
 
-        // Save Recipe only
-        recipe.setIngredients(null);
+        // Save Recipe only (without ingredients)
+        recipe.setIngredients(null); // Detach ingredients temporarily
         Recipe savedRecipe = recipeRepository.save(recipe);
 
-        // Add RecipeIngredient combinations to the database
-        Set<RecipeIngredient> updatedIngredients = new HashSet<>();
+        // Prepare list for updated RecipeIngredients
+        List<RecipeIngredient> updatedIngredients = new ArrayList<>();
+
+        // Process and link each ingredient
         for (RecipeIngredient recipeIngredient : ingredients) {
-            // Fetch managed Ingredient
+            // Fetch managed Ingredient entity
             Ingredient attachedIngredient = ingredientRepository.findById(recipeIngredient.getIngredient().getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Ingredient with ID " + recipeIngredient.getIngredient().getId() + " not found"));
+                    .orElseThrow(() -> new ResourceNotFoundException("Ingredient with ID " + recipeIngredient.getIngredient().getId() + " not found"));
 
             // Create composite key
             RecipeIngredientId id = new RecipeIngredientId();
             id.setRecipeId(savedRecipe.getId());
             id.setIngredientId(attachedIngredient.getId());
 
-            // Set fields
+            // Set fields for RecipeIngredient
             recipeIngredient.setId(id);
-            recipeIngredient.setRecipe(savedRecipe);
-            recipeIngredient.setIngredient(attachedIngredient);
-            recipeIngredient.setQuantity(recipeIngredient.getQuantity());
+            recipeIngredient.setRecipe(savedRecipe); // Link recipe
+            recipeIngredient.setIngredient(attachedIngredient); // Link ingredient
+            recipeIngredient.setQuantity(recipeIngredient.getQuantity()); // Quantity from input
 
             updatedIngredients.add(recipeIngredient);
         }
 
-        // Save RecipeIngredients
+        // Save all RecipeIngredient links in the DB
         recipeIngredientRepository.saveAll(updatedIngredients);
 
-        // Set ingredients back to Recipe
+        // Reattach to saved Recipe
         savedRecipe.setIngredients(updatedIngredients);
 
         return savedRecipe;
+    }
+
+    @Transactional
+    public Recipe update(int recipeId, Recipe updatedRecipe) {
+        Recipe existingRecipe = recipeRepository.findById(recipeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Recipe not found with ID: " + recipeId));
+
+        existingRecipe.setName(updatedRecipe.getName());
+        existingRecipe.setServings(updatedRecipe.getServings());
+        existingRecipe.setInstructions(updatedRecipe.getInstructions());
+
+        existingRecipe.setIngredients(new ArrayList<>()); // Detach for now
+
+        recipeIngredientRepository.deleteByRecipeId(recipeId); // Manual delete
+
+        List<RecipeIngredient> updatedIngredients = new ArrayList<>();
+
+        for (RecipeIngredient incomingIngredient : updatedRecipe.getIngredients()) {
+            Ingredient attachedIngredient = ingredientRepository.findById(incomingIngredient.getIngredient().getId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Ingredient with ID " + incomingIngredient.getIngredient().getId() + " not found"));
+
+            RecipeIngredientId id = new RecipeIngredientId(recipeId, attachedIngredient.getId());
+
+            RecipeIngredient recipeIngredient = new RecipeIngredient();
+            recipeIngredient.setId(id);
+            recipeIngredient.setRecipe(existingRecipe);
+            recipeIngredient.setIngredient(attachedIngredient);
+            recipeIngredient.setQuantity(incomingIngredient.getQuantity());
+
+            updatedIngredients.add(recipeIngredient);
+        }
+
+        recipeIngredientRepository.saveAll(updatedIngredients);
+
+        existingRecipe.setIngredients(updatedIngredients); // Reattach for response
+
+        return existingRecipe;
     }
 
     @Transactional
