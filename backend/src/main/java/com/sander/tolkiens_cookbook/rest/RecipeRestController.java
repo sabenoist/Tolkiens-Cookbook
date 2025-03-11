@@ -29,8 +29,8 @@ public class RecipeRestController {
     }
 
     @PostMapping
-    public Recipe createRecipe(@RequestBody Recipe recipe) {
-        return recipeService.saveRecipe(recipe);
+    public RecipeDTO createRecipe(@RequestBody Recipe recipe) {
+        return recipeService.save(recipe);
     }
 
     @DeleteMapping("/{id}")

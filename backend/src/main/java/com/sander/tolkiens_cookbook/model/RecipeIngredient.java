@@ -8,19 +8,19 @@ import jakarta.persistence.*;
 public class RecipeIngredient {
 
     @EmbeddedId
-    @JsonIgnore
+    //@JsonIgnore
     private RecipeIngredientId id;
 
     @ManyToOne
     @MapsId("recipeId")
     @JoinColumn(name = "recipe_id")
-    @JsonIgnore  // Prevents infinite recursion by ignoring recipe serialization
+    //@JsonIgnore  // Prevents infinite recursion by ignoring recipe serialization
     private Recipe recipe;
 
     @ManyToOne
     @MapsId("ingredientId")
     @JoinColumn(name = "ingredient_id")
-    @JsonIgnore  // Prevents full ingredient serialization
+    //@JsonIgnore  // Prevents full ingredient serialization
     private Ingredient ingredient;
 
     @Column(name = "quantity")
@@ -47,7 +47,6 @@ public class RecipeIngredient {
     public String getQuantity() { return quantity; }
     public void setQuantity(String quantity) { this.quantity = quantity; }
 
-    // This will return only the ingredient ID in JSON response
     public int getIngredientId() {
         return ingredient.getId();
     }

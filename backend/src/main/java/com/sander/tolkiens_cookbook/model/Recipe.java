@@ -26,7 +26,8 @@ public class Recipe {
     @Column(name = "instructions", nullable = false, columnDefinition = "TEXT")
     private String instructions;
 
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "recipe", orphanRemoval = true)
+    //@OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<RecipeIngredient> ingredients;
 
     public Recipe() {}
