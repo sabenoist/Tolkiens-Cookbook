@@ -35,13 +35,7 @@ public class RecipeService {
         List<Recipe> recipes = recipeDAO.searchRecipes(includeIngredients, excludeIngredients, keyword);
 
         return recipes.stream()
-                .map(recipe -> new RecipeDTO(
-                        recipe.getId(),
-                        recipe.getName(),
-                        recipe.getServings(),
-                        recipe.isVegetarian(),
-                        recipe.getRecipeIngredientsDTO(),
-                        recipe.getInstructions()))
+                .map(RecipeMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
