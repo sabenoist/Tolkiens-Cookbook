@@ -33,20 +33,10 @@ public class RecipeService {
                                          List<String> excludeIngredients,
                                          String keyword,
                                          Boolean isVegetarian) {
-        List<Recipe> recipes = recipeDAO.searchRecipes(includeIngredients, excludeIngredients, keyword);
-
-        List<RecipeDTO> recipeDTOs = recipes.stream()
+        return recipeDAO.searchRecipes(includeIngredients, excludeIngredients, keyword).stream()
+                .filter(recipe -> isVegetarian == null || !isVegetarian || recipe.isVegetarian())
                 .map(RecipeMapper::toDTO)
-                .toList();
-
-        // Filter out non-vegetarian recipes if isVegetarian is true
-        if (Boolean.TRUE.equals(isVegetarian)) {
-            recipeDTOs = recipeDTOs.stream()
-                    .filter(RecipeDTO::isVegetarian)
-                    .collect(Collectors.toList());
-        }
-
-        return recipeDTOs;
+                .collect(Collectors.toList());
     }
 
     public Recipe saveRecipe(Recipe recipe) {
