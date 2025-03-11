@@ -7,8 +7,9 @@ public class RecipeIngredientMapper {
 
     public static RecipeIngredientDTO toDTO(RecipeIngredient recipeIngredient) {
         return new RecipeIngredientDTO(
-                recipeIngredient.getQuantity(),
-                recipeIngredient.getIngredient().getName()
+                recipeIngredient.getIngredient().getId(),
+                recipeIngredient.getIngredient().getName(),
+                recipeIngredient.getQuantity()
         );
     }
 }

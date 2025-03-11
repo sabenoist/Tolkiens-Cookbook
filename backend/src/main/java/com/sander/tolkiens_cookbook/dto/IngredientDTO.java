@@ -15,35 +15,15 @@ public class IngredientDTO {
     }
 
     // Getters and Setters
-    public int getId() {
-        return id;
-    }
+    public int getId() { return this.id; }
+    public void setId(int id) { this.id = id; }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public String getName() { return this.name; }
+    public void setName(String name) { this.name = name; }
 
-    public String getName() {
-        return name;
-    }
+    public String getCategory() { return category; }
+    public void setCategory(String category) { this.category = category; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public boolean isVegetarian() {
-        return vegetarian;
-    }
-
-    public void setVegetarian(boolean vegetarian) {
-        this.vegetarian = vegetarian;
-    }
+    public boolean isVegetarian() { return vegetarian; }
+    public void setVegetarian(boolean vegetarian) { this.vegetarian = vegetarian; }
 }
