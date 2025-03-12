@@ -16,11 +16,21 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Service class for managing {@link Recipe} entities.
+ * Provides business logic for creating, retrieving, updating, deleting, and searching recipes.
+ */
 @Service
 public class RecipeService {
+
     @Autowired
     private RecipeDAO recipeDAO;
 
+    /**
+     * Retrieves all recipes and maps them to DTOs.
+     *
+     * @return List of {@link RecipeDTO} representing all recipes in the system.
+     */
     public List<RecipeDTO> getAllRecipes() {
         List<Recipe> recipes = recipeDAO.findAll();
 
@@ -29,12 +39,28 @@ public class RecipeService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Retrieves a recipe by its ID.
+     *
+     * @param id The ID of the recipe to retrieve.
+     * @return {@link RecipeDTO} representing the recipe.
+     * @throws ResourceNotFoundException if the recipe with the specified ID is not found.
+     */
     public RecipeDTO getRecipeById(int id) {
         return recipeDAO.findById(id)
                 .map(RecipeMapper::toDTO)
                 .orElseThrow(() -> new ResourceNotFoundException("Recipe with ID " + id + " not found"));
     }
 
+    /**
+     * Searches recipes based on optional filters such as ingredients to include/exclude, keywords, and vegetarian status.
+     *
+     * @param includeIngredients List of ingredient names that must be included in the recipe.
+     * @param excludeIngredients List of ingredient names that must be excluded from the recipe.
+     * @param keyword            Keyword to search in the instructions.
+     * @param isVegetarian       Boolean indicating whether to filter vegetarian (true), non-vegetarian (false), or both (null).
+     * @return List of {@link RecipeDTO} matching the search criteria.
+     */
     public List<RecipeDTO> searchRecipes(List<String> includeIngredients,
                                          List<String> excludeIngredients,
                                          String keyword,
@@ -60,7 +86,7 @@ public class RecipeService {
                 excludeEmpty
         );
 
-        // filter vegetarian
+        // Filter vegetarian/non-vegetarian if specified
         return recipes.stream()
                 .filter(recipe -> {
                     if (isVegetarian == null) return true; // No filter applied
@@ -71,11 +97,18 @@ public class RecipeService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Creates a new recipe along with its recipe-ingredient relationships.
+     *
+     * @param recipe The {@link Recipe} entity to create.
+     * @return {@link RecipeDTO} representing the created recipe.
+     */
     @Transactional
     public RecipeDTO save(Recipe recipe) {
+        // Prepare composite IDs for RecipeIngredients
         for (RecipeIngredient recipeIngredient : recipe.getIngredients()) {
             RecipeIngredientId id = new RecipeIngredientId();
-            id.setRecipeId(recipe.getId());  // Make sure Recipe has an ID first!
+            id.setRecipeId(recipe.getId());
             id.setIngredientId(recipeIngredient.getIngredient().getId());
             recipeIngredient.setId(id);
             recipeIngredient.setRecipe(recipe);
@@ -84,11 +117,23 @@ public class RecipeService {
         return RecipeMapper.toDTO(recipeDAO.save(recipe));
     }
 
+    /**
+     * Updates an existing recipe by its ID.
+     *
+     * @param id            The ID of the recipe to update.
+     * @param updatedRecipe The updated {@link Recipe} entity with new values.
+     * @return {@link RecipeDTO} representing the updated recipe.
+     */
     @Transactional
     public RecipeDTO updateRecipe(int id, Recipe updatedRecipe) {
         return RecipeMapper.toDTO(recipeDAO.update(id, updatedRecipe));
     }
 
+    /**
+     * Deletes a recipe by its ID, along with its associated recipe-ingredient links.
+     *
+     * @param id The ID of the recipe to delete.
+     */
     @Transactional
     public void deleteRecipe(int id) {
         recipeDAO.deleteById(id);

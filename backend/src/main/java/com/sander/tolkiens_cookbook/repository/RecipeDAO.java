@@ -11,8 +11,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
+/**
+ * Data Access Object (DAO) class for managing {@link Recipe} entities and their relationships.
+ * <p>
+ * This class encapsulates all logic for retrieving, creating, updating, and deleting recipes,
+ * including the handling of their related ingredients via {@link RecipeIngredient}.
+ * </p>
+ */
 @Repository
 public class RecipeDAO {
+
     @Autowired
     private RecipeRepository recipeRepository;
 
@@ -22,14 +30,36 @@ public class RecipeDAO {
     @Autowired
     private IngredientRepository ingredientRepository;
 
+    /**
+     * Retrieves all recipes from the database.
+     *
+     * @return a list of all {@link Recipe} entities.
+     */
     public List<Recipe> findAll() {
         return recipeRepository.findAll();
     }
 
+    /**
+     * Finds a recipe by its ID.
+     *
+     * @param id the ID of the recipe.
+     * @return an {@link Optional} containing the recipe if found, or empty otherwise.
+     */
     public Optional<Recipe> findById(int id) {
         return recipeRepository.findById(id);
     }
 
+    /**
+     * Searches for recipes based on ingredients, keywords, and inclusion/exclusion filters.
+     *
+     * @param includeIngredients list of ingredient names to include.
+     * @param excludeIngredients list of ingredient names to exclude.
+     * @param includeCount       number of included ingredients (for filtering).
+     * @param keywordPattern     search pattern for instructions.
+     * @param includeEmpty       whether the includeIngredients list is empty.
+     * @param excludeEmpty       whether the excludeIngredients list is empty.
+     * @return a list of matching {@link Recipe} entities.
+     */
     public List<Recipe> searchRecipes(List<String> includeIngredients,
                                       List<String> excludeIngredients,
                                       long includeCount,
@@ -46,62 +76,66 @@ public class RecipeDAO {
         );
     }
 
+    /**
+     * Saves a new recipe and its associated ingredients to the database.
+     *
+     * @param recipe the {@link Recipe} to save.
+     * @return the saved {@link Recipe}, including its linked ingredients.
+     */
     @Transactional
     public Recipe save(Recipe recipe) {
-        // Temporarily store RecipeIngredients
-        List<RecipeIngredient> ingredients = recipe.getIngredients(); // Now as List
-
-        // Save Recipe only (without ingredients)
+        List<RecipeIngredient> ingredients = recipe.getIngredients();
         recipe.setIngredients(null); // Detach ingredients temporarily
+
         Recipe savedRecipe = recipeRepository.save(recipe);
 
-        // Prepare list for updated RecipeIngredients
         List<RecipeIngredient> updatedIngredients = new ArrayList<>();
 
-        // Process and link each ingredient
+        // create RecipeIngredient associations in the database
         for (RecipeIngredient recipeIngredient : ingredients) {
-            // Fetch managed Ingredient entity
             Ingredient attachedIngredient = ingredientRepository.findById(recipeIngredient.getIngredient().getId())
                     .orElseThrow(() -> new ResourceNotFoundException("Ingredient with ID " + recipeIngredient.getIngredient().getId() + " not found"));
 
-            // Create composite key
-            RecipeIngredientId id = new RecipeIngredientId();
-            id.setRecipeId(savedRecipe.getId());
-            id.setIngredientId(attachedIngredient.getId());
+            RecipeIngredientId id = new RecipeIngredientId(savedRecipe.getId(), attachedIngredient.getId());
 
-            // Set fields for RecipeIngredient
             recipeIngredient.setId(id);
-            recipeIngredient.setRecipe(savedRecipe); // Link recipe
-            recipeIngredient.setIngredient(attachedIngredient); // Link ingredient
-            recipeIngredient.setQuantity(recipeIngredient.getQuantity()); // Quantity from input
+            recipeIngredient.setRecipe(savedRecipe);
+            recipeIngredient.setIngredient(attachedIngredient);
+            recipeIngredient.setQuantity(recipeIngredient.getQuantity());
 
             updatedIngredients.add(recipeIngredient);
         }
 
-        // Save all RecipeIngredient links in the DB
         recipeIngredientRepository.saveAll(updatedIngredients);
-
-        // Reattach to saved Recipe
         savedRecipe.setIngredients(updatedIngredients);
 
         return savedRecipe;
     }
 
+    /**
+     * Updates an existing recipe and its associated ingredients in the database.
+     *
+     * @param recipeId       the ID of the recipe to update.
+     * @param updatedRecipe  the updated {@link Recipe} data.
+     * @return the updated {@link Recipe} entity.
+     */
     @Transactional
     public Recipe update(int recipeId, Recipe updatedRecipe) {
         Recipe existingRecipe = recipeRepository.findById(recipeId)
                 .orElseThrow(() -> new ResourceNotFoundException("Recipe not found with ID: " + recipeId));
 
+        // update recipe fields except ingredients
         existingRecipe.setName(updatedRecipe.getName());
         existingRecipe.setServings(updatedRecipe.getServings());
         existingRecipe.setInstructions(updatedRecipe.getInstructions());
 
         existingRecipe.setIngredients(new ArrayList<>()); // Detach for now
 
-        recipeIngredientRepository.deleteByRecipeId(recipeId); // Manual delete
+        recipeIngredientRepository.deleteByRecipeId(recipeId); // Clear old ingredients
 
         List<RecipeIngredient> updatedIngredients = new ArrayList<>();
 
+        // update the recipe ingredients list
         for (RecipeIngredient incomingIngredient : updatedRecipe.getIngredients()) {
             Ingredient attachedIngredient = ingredientRepository.findById(incomingIngredient.getIngredient().getId())
                     .orElseThrow(() -> new ResourceNotFoundException("Ingredient with ID " + incomingIngredient.getIngredient().getId() + " not found"));
@@ -118,12 +152,16 @@ public class RecipeDAO {
         }
 
         recipeIngredientRepository.saveAll(updatedIngredients);
-
-        existingRecipe.setIngredients(updatedIngredients); // Reattach for response
+        existingRecipe.setIngredients(updatedIngredients);
 
         return existingRecipe;
     }
 
+    /**
+     * Deletes a recipe and all its ingredient links from the database.
+     *
+     * @param id the ID of the recipe to delete.
+     */
     @Transactional
     public void deleteById(int id) {
         recipeIngredientRepository.deleteByRecipeId(id);
