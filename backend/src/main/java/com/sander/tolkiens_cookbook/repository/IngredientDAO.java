@@ -2,6 +2,7 @@ package com.sander.tolkiens_cookbook.repository;
 
 import com.sander.tolkiens_cookbook.exception.ResourceNotFoundException;
 import com.sander.tolkiens_cookbook.model.Ingredient;
+import com.sander.tolkiens_cookbook.model.RecipeIngredient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,11 +12,10 @@ import java.util.Optional;
 
 /**
  * Data Access Object (DAO) for managing {@link Ingredient} entities.
- * <p>
+ *
  * Provides methods for common CRUD operations such as finding, saving, updating, and deleting ingredients.
- * This class also ensures that any associated {@link com.sander.tolkiens_cookbook.model.RecipeIngredient}
+ * This class also ensures that any associated {@link RecipeIngredient}
  * relationships are properly handled when deleting an ingredient.
- * </p>
  */
 @Repository
 public class IngredientDAO {
@@ -78,13 +78,13 @@ public class IngredientDAO {
 
     /**
      * Deletes an ingredient by its ID. Also removes all associated
-     * {@link com.sander.tolkiens_cookbook.model.RecipeIngredient} records to maintain referential integrity.
+     * {@link RecipeIngredient} records to maintain referential integrity.
      *
      * @param id the ID of the ingredient to delete.
      */
     @Transactional
     public void deleteById(int id) {
-        recipeIngredientRepository.deleteByIngredientId(id); // Clean up relations first
+        recipeIngredientRepository.deleteByIngredientId(id);
         ingredientRepository.deleteById(id);
     }
 
@@ -98,15 +98,12 @@ public class IngredientDAO {
      */
     @Transactional
     public Ingredient update(int id, Ingredient updatedIngredient) {
-        // Find existing ingredient
         Ingredient existingIngredient = ingredientRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Ingredient not found with ID: " + id));
 
-        // Update fields
         existingIngredient.setName(updatedIngredient.getName());
         existingIngredient.setCategory(updatedIngredient.getCategory());
 
-        // Return updated entity
         return existingIngredient;
     }
 }

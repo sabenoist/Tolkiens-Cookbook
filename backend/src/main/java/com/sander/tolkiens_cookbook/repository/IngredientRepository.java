@@ -6,10 +6,9 @@ import org.springframework.stereotype.Repository;
 
 /**
  * Repository interface for performing CRUD operations on {@link Ingredient} entities.
- * <p>
+ *
  * Extends {@link JpaRepository} to provide built-in methods for entity management
  * such as save, find, delete, and custom query derivation by method names.
- * </p>
  */
 @Repository
 public interface IngredientRepository extends JpaRepository<Ingredient, Integer> {

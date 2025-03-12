@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
  * Represents a recipe containing various ingredients, serving size, instructions,
  * and metadata about whether it is vegetarian.
  *
- * <p>The {@link RecipeIngredient} class is used to represent the relationship between
- * recipes and ingredients, including additional information like quantity.</p>
+ * The {@link RecipeIngredient} class is used to represent the relationship between
+ * recipes and ingredients, including additional information like quantity.
  *
  * @see RecipeIngredient
  * @see Ingredient
@@ -72,8 +72,8 @@ public class Recipe {
     /**
      * Checks if this recipe is vegetarian.
      *
-     * <p>This method evaluates all ingredients used in the recipe. If all ingredients are vegetarian,
-     * the recipe is considered vegetarian.</p>
+     * This method evaluates all ingredients used in the recipe. If all ingredients are vegetarian,
+     * the recipe is considered vegetarian.
      *
      * @return {@code true} if all ingredients are vegetarian, {@code false} otherwise.
      */
@@ -86,7 +86,7 @@ public class Recipe {
     /**
      * Converts the list of {@link RecipeIngredient} entities into a list of {@link RecipeIngredientDTO} objects.
      *
-     * <p>This method is used to expose a simplified version of the recipe ingredients, typically for API responses.</p>
+     * This method is used to expose a simplified version of the recipe ingredients, typically for API responses.
      *
      * @return a list of {@link RecipeIngredientDTO} representing the ingredients and their quantities.
      */

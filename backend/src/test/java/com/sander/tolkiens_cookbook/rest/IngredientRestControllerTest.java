@@ -155,7 +155,7 @@ class IngredientRestControllerTest {
     }
 
     /**
-     * Integration test for deleting an ingredient that does not exist..
+     * Integration test for deleting an ingredient that does not exist.
      */
     @Test
     void testDeleteIngredient_NotFound() throws Exception {

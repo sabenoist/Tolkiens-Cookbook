@@ -5,8 +5,8 @@ import java.util.List;
 /**
  * Data Transfer Object (DTO) for transferring Recipe data between layers.
  *
- * <p>This DTO is used to represent a Recipe entity without exposing internal entity details.
- * It includes its basic information, list of ingredients, and instructions.</p>
+ * This DTO is used to represent a Recipe entity without exposing internal entity details.
+ * It includes its basic information, list of ingredients, and instructions.
  */
 public class RecipeDTO {
 

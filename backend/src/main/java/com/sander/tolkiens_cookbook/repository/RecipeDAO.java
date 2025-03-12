@@ -13,10 +13,9 @@ import java.util.*;
 
 /**
  * Data Access Object (DAO) class for managing {@link Recipe} entities and their relationships.
- * <p>
+ *
  * This class encapsulates all logic for retrieving, creating, updating, and deleting recipes,
  * including the handling of their related ingredients via {@link RecipeIngredient}.
- * </p>
  */
 @Repository
 public class RecipeDAO {

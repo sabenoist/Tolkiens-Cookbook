@@ -3,34 +3,31 @@ package com.sander.tolkiens_cookbook.model;
 /**
  * Enumeration representing different categories of ingredients used in recipes.
  *
- * <p>This enum is used to classify ingredients into meaningful groups,
+ * This enum is used to classify ingredients into meaningful groups,
  * such as MEAT, FISH, VEGETABLE, etc., and is also used to determine properties
- * like whether an ingredient is vegetarian or not.</p>
- *
- * <p>The categories are used in {@link com.sander.tolkiens_cookbook.model.Ingredient}
- * for classification and business logic decisions, such as filtering recipes by ingredient types.</p>
+ * like whether an ingredient is vegetarian or not.
  */
 public enum Category {
 
-    /** Represents meat-based ingredients (e.g., beef, chicken, pork). */
+    /** Represents meat-based ingredients */
     MEAT,
 
-    /** Represents fish or seafood-based ingredients (e.g., salmon, shrimp). */
+    /** Represents fish or seafood-based ingredients */
     FISH,
 
-    /** Represents vegetable ingredients (e.g., spinach, broccoli, carrots). */
+    /** Represents vegetable ingredients */
     VEGETABLE,
 
-    /** Represents fruit ingredients (e.g., apple, banana, orange). */
+    /** Represents fruit ingredients */
     FRUIT,
 
-    /** Represents dairy products (e.g., milk, cheese, yogurt). */
+    /** Represents dairy products */
     DAIRY,
 
-    /** Represents grain-based ingredients (e.g., rice, wheat, oats). */
+    /** Represents grain-based ingredients */
     GRAIN,
 
-    /** Represents seeds and similar ingredients (e.g., sunflower seeds, chia seeds). */
+    /** Represents seeds and similar ingredients */
     SEED,
 
     /** Represents other ingredients that do not fit into the predefined categories. */

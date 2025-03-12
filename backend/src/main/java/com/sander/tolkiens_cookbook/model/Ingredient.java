@@ -7,11 +7,11 @@ import java.util.Set;
 /**
  * Represents an ingredient used in recipes.
  *
- * <p>Each ingredient has a name, belongs to a category, and can be associated
- * with multiple recipes through the {@link RecipeIngredient} entity.</p>
+ * Each ingredient has a name, belongs to a category, and can be associated
+ * with multiple recipes through the {@link RecipeIngredient} entity.
  *
- * <p>The class also provides a helper method to determine whether an ingredient
- * is considered vegetarian based on its category.</p>
+ * The class also provides a helper method to determine whether an ingredient
+ * is considered vegetarian based on its category.
  *
  * @see RecipeIngredient
  * @see Category

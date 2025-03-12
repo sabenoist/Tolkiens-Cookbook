@@ -12,9 +12,9 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 /**
  * Global exception handler to manage and customize the application's error responses.
  *
- * <p>This class handles various common exceptions, including not found, type mismatches,
+ * This class handles various common exceptions, including not found, type mismatches,
  * validation errors, and general unhandled exceptions. Responses are returned as
- * messages with appropriate HTTP status codes.</p>
+ * messages with appropriate HTTP status codes.
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -79,7 +79,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<String> handleGenericException(Exception ex) {
-        ex.printStackTrace(); // For debugging purposes, can be removed in production
+        ex.printStackTrace();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body("An unexpected error occurred.");
     }

@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 
 /**
  * Service class for managing {@link Recipe} entities.
+ *
  * Provides business logic for creating, retrieving, updating, deleting, and searching recipes.
  */
 @Service
@@ -55,7 +56,7 @@ public class RecipeService {
     public List<RecipeDTO> searchRecipes(List<String> includeIngredients,
                                          List<String> excludeIngredients,
                                          String keyword,
-                                         Integer servings,  // added servings
+                                         Integer servings,
                                          Boolean isVegetarian) {
 
         // Handle null or empty lists
@@ -78,7 +79,7 @@ public class RecipeService {
                 servings
         );
 
-        // Vegetarian filtering (still in-memory if needed)
+        // Vegetarian filtering
         return recipes.stream()
                 .filter(recipe -> {
                     if (isVegetarian == null) return true;
@@ -87,7 +88,6 @@ public class RecipeService {
                 .map(RecipeMapper::toDTO)
                 .collect(Collectors.toList());
     }
-
 
     /**
      * Creates a new recipe along with its recipe-ingredient relationships.

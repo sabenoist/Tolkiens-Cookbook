@@ -8,8 +8,8 @@ import java.util.Objects;
  * Composite primary key for the {@link RecipeIngredient} entity, combining
  * a recipe ID and an ingredient ID.
  *
- * <p>This class is marked as {@link Embeddable} to be used as an embedded ID in JPA entities,
- * and implements {@link Serializable} as required for composite keys.</p>
+ * This class is marked as {@link Embeddable} to be used as an embedded ID in JPA entities,
+ * and implements {@link Serializable} as required for composite keys.
  *
  * @see RecipeIngredient
  */

@@ -7,8 +7,8 @@ import java.util.Objects;
  * Represents the many-to-many relationship between {@link Recipe} and {@link Ingredient},
  * including the quantity of each ingredient used in a recipe.
  *
- * <p>This entity is mapped to the "recipe_ingredients" table in the database and
- * uses a composite key defined in {@link RecipeIngredientId}.</p>
+ * This entity is mapped to the "recipe_ingredients" table in the database and
+ * uses a composite key defined in {@link RecipeIngredientId}.
  *
  * @see Recipe
  * @see Ingredient

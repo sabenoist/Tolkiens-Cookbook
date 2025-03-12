@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 
 /**
  * Service class for managing {@link Ingredient} entities.
+ *
  * Provides business logic for creating, retrieving, updating, and deleting ingredients.
  */
 @Service

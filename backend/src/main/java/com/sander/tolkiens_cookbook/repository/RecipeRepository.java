@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * Repository interface for managing {@link Recipe} entities.
- * <p>
+ *
  * Provides custom queries for searching recipes based on included/excluded ingredients,
  * keywords in instructions, and supports dynamic search flexibility.
  */

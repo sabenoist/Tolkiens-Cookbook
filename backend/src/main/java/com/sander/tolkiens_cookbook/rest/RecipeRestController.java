@@ -13,6 +13,7 @@ import java.util.List;
 
 /**
  * REST controller for managing recipes.
+ *
  * Provides endpoints for creating, reading, updating, deleting, and filtering recipes.
  */
 @RestController

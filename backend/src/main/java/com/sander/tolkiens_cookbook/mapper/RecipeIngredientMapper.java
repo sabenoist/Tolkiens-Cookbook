@@ -6,8 +6,8 @@ import com.sander.tolkiens_cookbook.model.RecipeIngredient;
 /**
  * Mapper class for converting {@link RecipeIngredient} entities to {@link RecipeIngredientDTO} objects.
  *
- * <p>This class is used to separate entity logic from data transfer logic, enabling
- * a clean and maintainable structure for sending recipe-ingredient data to clients.</p>
+ * This class is used to separate entity logic from data transfer logic, enabling
+ * a clean and maintainable structure for sending recipe-ingredient data to clients.
  */
 public class RecipeIngredientMapper {
 

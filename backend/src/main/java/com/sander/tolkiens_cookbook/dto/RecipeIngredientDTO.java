@@ -3,8 +3,8 @@ package com.sander.tolkiens_cookbook.dto;
 /**
  * Data Transfer Object (DTO) for transferring RecipeIngredient data between layers.
  *
- * <p>This DTO is used to represent a RecipeIngredient entity without exposing internal entity details.
- * it represents an ingredient used in a recipe, including its ID, name, and quantity.</p>
+ * This DTO is used to represent a RecipeIngredient entity without exposing internal entity details.
+ * it represents an ingredient used in a recipe, including its ID, name, and quantity.
  */
 public class RecipeIngredientDTO {
 

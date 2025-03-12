@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * REST controller for managing ingredients.
- * <p>
+ *
  * Provides endpoints to create, read, update, and delete ingredients in the database.
  */
 @RestController
