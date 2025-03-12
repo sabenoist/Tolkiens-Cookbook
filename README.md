@@ -2,9 +2,9 @@
 A Java Spring Boot project.
 
 ## Requirements to be installed beforehand
-Java 17
-Docker
-Docker Compose
+- Java 17
+- Docker
+- Docker Compose
 
 ## How to run
 ### To run the unit and integration tests
