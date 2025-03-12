@@ -58,6 +58,7 @@ public class RecipeDAO {
      * @param keywordPattern     search pattern for instructions.
      * @param includeEmpty       whether the includeIngredients list is empty.
      * @param excludeEmpty       whether the excludeIngredients list is empty.
+     * @param servings           Exact servings to filter.
      * @return a list of matching {@link Recipe} entities.
      */
     public List<Recipe> searchRecipes(List<String> includeIngredients,
@@ -65,16 +66,19 @@ public class RecipeDAO {
                                       long includeCount,
                                       String keywordPattern,
                                       boolean includeEmpty,
-                                      boolean excludeEmpty) {
+                                      boolean excludeEmpty,
+                                      Integer servings) {
         return recipeRepository.searchRecipes(
                 includeIngredients,
                 excludeIngredients,
                 includeCount,
                 keywordPattern,
                 includeEmpty,
-                excludeEmpty
+                excludeEmpty,
+                servings
         );
     }
+
 
     /**
      * Saves a new recipe and its associated ingredients to the database.

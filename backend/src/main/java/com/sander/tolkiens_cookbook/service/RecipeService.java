@@ -52,18 +52,10 @@ public class RecipeService {
                 .orElseThrow(() -> new ResourceNotFoundException("Recipe with ID " + id + " not found"));
     }
 
-    /**
-     * Searches recipes based on optional filters such as ingredients to include/exclude, keywords, and vegetarian status.
-     *
-     * @param includeIngredients List of ingredient names that must be included in the recipe.
-     * @param excludeIngredients List of ingredient names that must be excluded from the recipe.
-     * @param keyword            Keyword to search in the instructions.
-     * @param isVegetarian       Boolean indicating whether to filter vegetarian (true), non-vegetarian (false), or both (null).
-     * @return List of {@link RecipeDTO} matching the search criteria.
-     */
     public List<RecipeDTO> searchRecipes(List<String> includeIngredients,
                                          List<String> excludeIngredients,
                                          String keyword,
+                                         Integer servings,  // added servings
                                          Boolean isVegetarian) {
 
         // Handle null or empty lists
@@ -76,26 +68,26 @@ public class RecipeService {
         boolean includeEmpty = includeIngredients.isEmpty();
         boolean excludeEmpty = excludeIngredients.isEmpty();
 
-        // Perform query
         List<Recipe> recipes = recipeDAO.searchRecipes(
                 includeIngredients,
                 excludeIngredients,
                 includeCount,
                 keywordPattern,
                 includeEmpty,
-                excludeEmpty
+                excludeEmpty,
+                servings
         );
 
-        // Filter vegetarian/non-vegetarian if specified
+        // Vegetarian filtering (still in-memory if needed)
         return recipes.stream()
                 .filter(recipe -> {
-                    if (isVegetarian == null) return true; // No filter applied
-                    if (isVegetarian) return recipe.isVegetarian(); // Only vegetarian
-                    return !recipe.isVegetarian(); // Only non-vegetarian
+                    if (isVegetarian == null) return true;
+                    return isVegetarian == recipe.isVegetarian();
                 })
                 .map(RecipeMapper::toDTO)
                 .collect(Collectors.toList());
     }
+
 
     /**
      * Creates a new recipe along with its recipe-ingredient relationships.

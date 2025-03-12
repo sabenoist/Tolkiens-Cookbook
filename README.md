@@ -99,12 +99,12 @@ localhost:8080/api/recipes/<id>
 
 Or use filters such as includeIngredients and excludeIngredients (seperate include and exlude multiple ingredients by comma), keyword (to search the instructions for a keyword), or isVegetarian (for (non-) vegetarian recipes only).
 
-?includeIngredients=<list>
+?includeIngredients=<strings split by a comma>
 ``` 
 http://localhost:8080/api/recipes/filter?includeIngredients=salt
 ```
 
-?excludeIngredients=<list>
+?excludeIngredients=<strings split by a comma>
 ``` 
 http://localhost:8080/api/recipes/filter?excludeIngredients=salt
 ```
@@ -115,6 +115,11 @@ http://localhost:8080/api/recipes/filter?keyword=oven
 ```
 
 ?isVegetarian=<boolean>
+```
+http://localhost:8080/api/recipes/filter?servings=1
+```
+
+?servings=<integer>
 ```
 http://localhost:8080/api/recipes/filter?isVegetarian=true
 ```

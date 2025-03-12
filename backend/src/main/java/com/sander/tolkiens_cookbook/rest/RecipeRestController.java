@@ -23,11 +23,12 @@ public class RecipeRestController {
     private RecipeService recipeService;
 
     /**
-     * Searches for recipes based on included and excluded ingredients, a keyword, and vegetarian status.
+     * Searches for recipes based on included and excluded ingredients, a keyword, servings, and vegetarian status.
      *
      * @param includeIngredients Comma-separated list of ingredient names to include (optional).
      * @param excludeIngredients Comma-separated list of ingredient names to exclude (optional).
      * @param keyword            Keyword to search for in recipe instructions (optional).
+     * @param servings           Exact servings to filter (optional).
      * @param isVegetarian       Boolean indicating if only vegetarian recipes should be returned (optional).
      * @return List of {@link RecipeDTO} matching the search criteria.
      */
@@ -36,9 +37,9 @@ public class RecipeRestController {
             @RequestParam(required = false) String includeIngredients,
             @RequestParam(required = false) String excludeIngredients,
             @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) Integer servings, // Added
             @RequestParam(required = false) Boolean isVegetarian) {
 
-        // Split comma-separated lists or return empty lists if null/empty
         List<String> includeList = (includeIngredients != null && !includeIngredients.isEmpty())
                 ? Arrays.asList(includeIngredients.split(","))
                 : Collections.emptyList();
@@ -47,7 +48,7 @@ public class RecipeRestController {
                 ? Arrays.asList(excludeIngredients.split(","))
                 : Collections.emptyList();
 
-        return recipeService.searchRecipes(includeList, excludeList, keyword, isVegetarian);
+        return recipeService.searchRecipes(includeList, excludeList, keyword, servings, isVegetarian);
     }
 
     /**

@@ -206,20 +206,33 @@ class RecipeDAOTest {
     @Test
     void testSearchRecipes() {
         Ingredient tomato = new Ingredient("Tomato", Category.VEGETABLE);
+        tomato.setId(1); // Set ID if needed for mapping
         Recipe recipe = new Recipe("Pasta", 2);
+        recipe.setId(1); // Set ID if needed for mapping
         RecipeIngredient ri = new RecipeIngredient(recipe, tomato, "100g");
+        ri.setRecipe(recipe);
+        ri.setIngredient(tomato);
         recipe.setIngredients(List.of(ri));
 
+        // Mock repository call
         when(recipeRepository.searchRecipes(
-                anyList(), anyList(), anyLong(), anyString(), anyBoolean(), anyBoolean())
-        ).thenReturn(List.of(recipe));
+                anyList(), anyList(), anyLong(), anyString(), anyBoolean(), anyBoolean(), any())
+        ).thenReturn(List.of(recipe)); // Add `any()` at end for servings
 
+        // Execute test search
         List<Recipe> result = recipeDAO.searchRecipes(
-                List.of("Tomato"), List.of("Meat"), 1L, "%easy%", false, false
+                List.of("Tomato"), // includeIngredients
+                List.of("Meat"),   // excludeIngredients
+                1L,                // includeCount
+                "%easy%",          // keywordPattern
+                false,             // includeEmpty
+                false,             // excludeEmpty
+                null               // servings
         );
 
         assertEquals(1, result.size());
         assertEquals("Pasta", result.get(0).getName());
         assertEquals(1, result.get(0).getIngredients().size());
     }
+
 }

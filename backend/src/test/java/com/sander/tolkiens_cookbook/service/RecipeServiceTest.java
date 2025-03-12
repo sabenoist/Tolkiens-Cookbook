@@ -86,20 +86,30 @@ class RecipeServiceTest {
     @Test
     void testSearchRecipes_NoFilters() {
         Recipe recipe = new Recipe("Pasta", 2);
-        when(recipeDAO.searchRecipes(Collections.emptyList(), Collections.emptyList(), 0, null, true, true))
-                .thenReturn(List.of(recipe));
 
-        List<RecipeDTO> result = recipeService.searchRecipes(null, null, null, null);
+        when(recipeDAO.searchRecipes(
+                Collections.emptyList(),
+                Collections.emptyList(),
+                0,
+                null,
+                true,
+                true,
+                null
+        )).thenReturn(List.of(recipe));
+
+        List<RecipeDTO> result = recipeService.searchRecipes(null, null, null, null, null);
 
         assertEquals(1, result.size());
         assertEquals("Pasta", result.get(0).getName());
+
         verify(recipeDAO, times(1)).searchRecipes(
                 Collections.emptyList(),
                 Collections.emptyList(),
                 0,
                 null,
                 true,
-                true
+                true,
+                null
         );
     }
 
@@ -116,15 +126,18 @@ class RecipeServiceTest {
         Recipe vegetarianRecipe = new Recipe("Salad", 1);
         vegetarianRecipe.setIngredients(List.of(recipeIngredient));
 
-        when(recipeDAO.searchRecipes(any(), any(), anyLong(), any(), anyBoolean(), anyBoolean()))
-                .thenReturn(List.of(vegetarianRecipe));
+        when(recipeDAO.searchRecipes(
+                anyList(), anyList(), anyLong(), any(), anyBoolean(), anyBoolean(), any()
+        )).thenReturn(List.of(vegetarianRecipe));
 
-        List<RecipeDTO> result = recipeService.searchRecipes(null, null, null, true);
+        List<RecipeDTO> result = recipeService.searchRecipes(null, null, null, null, true);
 
         assertEquals(1, result.size());
         assertEquals("Salad", result.get(0).getName());
 
-        verify(recipeDAO, times(1)).searchRecipes(any(), any(), anyLong(), any(), anyBoolean(), anyBoolean());
+        verify(recipeDAO, times(1)).searchRecipes(
+                anyList(), anyList(), anyLong(), any(), anyBoolean(), anyBoolean(), any()
+        );
     }
 
     /**
@@ -140,15 +153,18 @@ class RecipeServiceTest {
         Recipe nonVegetarianRecipe = new Recipe("Chicken Curry", 2);
         nonVegetarianRecipe.setIngredients(List.of(recipeIngredient));
 
-        when(recipeDAO.searchRecipes(any(), any(), anyLong(), any(), anyBoolean(), anyBoolean()))
-                .thenReturn(List.of(nonVegetarianRecipe));
+        when(recipeDAO.searchRecipes(
+                anyList(), anyList(), anyLong(), any(), anyBoolean(), anyBoolean(), any()
+        )).thenReturn(List.of(nonVegetarianRecipe));
 
-        List<RecipeDTO> result = recipeService.searchRecipes(null, null, null, false);
+        List<RecipeDTO> result = recipeService.searchRecipes(null, null, null, null, false);
 
         assertEquals(1, result.size());
         assertEquals("Chicken Curry", result.get(0).getName());
 
-        verify(recipeDAO, times(1)).searchRecipes(any(), any(), anyLong(), any(), anyBoolean(), anyBoolean());
+        verify(recipeDAO, times(1)).searchRecipes(
+                anyList(), anyList(), anyLong(), any(), anyBoolean(), anyBoolean(), any()
+        );
     }
 
     /**
