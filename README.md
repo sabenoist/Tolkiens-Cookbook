@@ -44,20 +44,20 @@ You can make requests to the endpoints using either Postman or cURL or a similar
 ### GET ingredient
 Returns a list of existing ingredients in the database.
 
-```HTTP
+```
 localhost:8080/api/ingredients
 ```
 
 You can also search for ingredients by id.
 
-```HTTP
+```
 localhost:8080/api/ingredients/<id>
 ```
 
 ### POST ingredient
 Creates a new ingredient in the database. 
 
-```HTTP
+```
 localhost:8080/api/ingredients
 ```
 ```JSON
@@ -70,7 +70,7 @@ localhost:8080/api/ingredients
 ### PUT ingredient
 Modify an ingredient in the database.
 
-```HTTP
+```
 localhost:8080/api/ingredients/<id>
 ```
 ```JSON
@@ -83,50 +83,50 @@ localhost:8080/api/ingredients/<id>
 ### DELETE ingredient
 Deletes an ingredient from the database and also removes it from all recipes it was linked in.
 
-```HTTP
+```
 localhost:8080/api/ingredients/<id>
 ```
 
 ### GET recipe
-```HTTP
+```
 http://localhost:8080/api/recipes
 ```
 
 You can also search for recipes by id.
-```HTTP
+```
 localhost:8080/api/recipes/<id>
 ```
 
 Or use filters such as includeIngredients and excludeIngredients (seperate include and exlude multiple ingredients by comma), keyword (to search the instructions for a keyword), or isVegetarian (for (non-) vegetarian recipes only).
 
 ?includeIngredients=<list>
-```HTTP 
+``` 
 http://localhost:8080/api/recipes/filter?includeIngredients=salt
 ```
 
 ?excludeIngredients=<list>
-```HTTP 
+``` 
 http://localhost:8080/api/recipes/filter?excludeIngredients=salt
 ```
 
 ?keyword=<text>
-```HTTP
+```
 http://localhost:8080/api/recipes/filter?keyword=oven
 ```
 
 ?isVegetarian=<boolean>
-```HTTP
+```
 http://localhost:8080/api/recipes/filter?isVegetarian=true
 ```
 
 Combining filters
-```HTTP
+```
 http://localhost:8080/api/recipes/filter?includeIngredients=sugar&excludeIngredients=milk&keyword=oven&isVegetarian=false
 ```
 
 ### POST recipe
 Creates a new recipe with existing ingredients in the database.
-```HTTP
+```
 http://localhost:8080/api/recipes
 ```
 
@@ -154,7 +154,7 @@ http://localhost:8080/api/recipes
 
 ### PUT recipe
 Updates an existing recipe.
-```HTTP
+```
 http://localhost:8080/api/recipes/<id>
 ```
 
@@ -182,6 +182,6 @@ http://localhost:8080/api/recipes/<id>
 
 ### DELETE recipe
 Deletes an existing recipe.
-```HTTP
+```
 localhost:8080/api/ingredients/<id>
 ```
