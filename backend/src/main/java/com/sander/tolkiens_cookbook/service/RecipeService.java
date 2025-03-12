@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,8 +39,34 @@ public class RecipeService {
                                          List<String> excludeIngredients,
                                          String keyword,
                                          Boolean isVegetarian) {
-        return recipeDAO.searchRecipes(includeIngredients, excludeIngredients, keyword).stream()
-                .filter(recipe -> isVegetarian == null || !isVegetarian || recipe.isVegetarian())
+
+        // Handle null or empty lists
+        if (includeIngredients == null) includeIngredients = Collections.emptyList();
+        if (excludeIngredients == null) excludeIngredients = Collections.emptyList();
+
+        long includeCount = includeIngredients.size();
+        String keywordPattern = (keyword == null || keyword.isEmpty()) ? null : "%" + keyword + "%";
+
+        boolean includeEmpty = includeIngredients.isEmpty();
+        boolean excludeEmpty = excludeIngredients.isEmpty();
+
+        // Perform query
+        List<Recipe> recipes = recipeDAO.searchRecipes(
+                includeIngredients,
+                excludeIngredients,
+                includeCount,
+                keywordPattern,
+                includeEmpty,
+                excludeEmpty
+        );
+
+        // filter vegetarian
+        return recipes.stream()
+                .filter(recipe -> {
+                    if (isVegetarian == null) return true; // No filter applied
+                    if (isVegetarian) return recipe.isVegetarian(); // Only vegetarian
+                    return !recipe.isVegetarian(); // Only non-vegetarian
+                })
                 .map(RecipeMapper::toDTO)
                 .collect(Collectors.toList());
     }

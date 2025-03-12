@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -17,6 +18,25 @@ public class RecipeRestController {
 
     public RecipeRestController(RecipeService recipeService) {
         this.recipeService = recipeService;
+    }
+
+    @GetMapping("/filter")
+    public List<RecipeDTO> searchRecipes(
+            @RequestParam(required = false) String includeIngredients,
+            @RequestParam(required = false) String excludeIngredients,
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) Boolean isVegetarian) {
+
+        // Split comma-separated lists
+        List<String> includeList = (includeIngredients != null && !includeIngredients.isEmpty())
+                ? Arrays.asList(includeIngredients.split(","))
+                : Collections.emptyList();
+
+        List<String> excludeList = (excludeIngredients != null && !excludeIngredients.isEmpty())
+                ? Arrays.asList(excludeIngredients.split(","))
+                : Collections.emptyList();
+
+        return recipeService.searchRecipes(includeList, excludeList, keyword, isVegetarian);
     }
 
     @GetMapping
@@ -43,28 +63,5 @@ public class RecipeRestController {
     public ResponseEntity<Void> deleteRecipe(@PathVariable int id) {
         recipeService.deleteRecipe(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/search")
-    public List<RecipeDTO> searchRecipes(
-            @RequestParam(required = false) String includeIngredients,
-            @RequestParam(required = false) String excludeIngredients,
-            @RequestParam(required = false) String keyword,
-            @RequestParam(required = false) String isVegetarian) {
-
-        List<String> includeList = (includeIngredients != null && !includeIngredients.isEmpty())
-                ? Arrays.asList(includeIngredients.split(","))
-                : null;
-
-        List<String> excludeList = (excludeIngredients != null && !excludeIngredients.isEmpty())
-                ? Arrays.asList(excludeIngredients.split(","))
-                : null;
-
-        Boolean vegetarian = null;
-        if (isVegetarian != null) {
-            vegetarian = Boolean.parseBoolean(isVegetarian);
-        }
-
-        return recipeService.searchRecipes(includeList, excludeList, keyword, vegetarian);
     }
 }
