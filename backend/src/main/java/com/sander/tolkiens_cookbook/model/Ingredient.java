@@ -20,7 +20,7 @@ public class Ingredient {
     @Column(name = "category", nullable = false)
     private Category category;
 
-    @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "ingredient")
     private Set<RecipeIngredient> recipes = new HashSet<>();
 
     public Ingredient() {}
