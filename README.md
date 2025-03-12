@@ -1,5 +1,5 @@
 # Tolkiens-Cookbook
-A Java Spring Boot project.
+A Java Spring Boot project. 
 
 ## Requirements to be installed beforehand
 - Java 17
@@ -37,6 +37,21 @@ Get-Content cookbook_dump.sql | docker exec -i cookbook-db psql -U postgres -d c
 ```Shell
 docker exec -i cookbook-db psql -U postgres -d cookbook < cookbook_dump.sql
 ```
+## API Introduction
+This API allows users to manage Ingredient and Recipe entities.
+
+An ingredient contains the following fields:
+- id            INTEGER
+- name          STRING
+- category      ENUM
+
+A Recipe contains the following fields: 
+- id            INTEGER
+- name          STRING
+- servings      INTEGER
+- vegetarian    BOOLEAN  
+- ingredients   LIST<INGREDIENT>
+- instructions  STRING
 
 ## API Endpoints
 You can make requests to the endpoints using either Postman or cURL or a similar software. GET requests can also be made inside a normal browser.
