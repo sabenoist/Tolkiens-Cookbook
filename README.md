@@ -9,11 +9,17 @@ Docker Compose
 ## How to run
 ### To run the unit and integration tests
 1. open a terminal and go to the backend folder. 
-2. run the command: .\mvnw test
+2. run the command: 
+```PowerShell
+.\mvnw test
+```
 
 ### To run the application
 1. open a terminal and go to the backend folder.
-2. run the command: .\mvnw clean spring-boot:run
+2. run the command: 
+```PowerShell
+.\mvnw clean spring-boot:run
+```
 
 This will automatically create a docker container that hosts a postgres database on port 5432. The cookbook API will be running on localhost:8080.
 
@@ -21,10 +27,16 @@ This will automatically create a docker container that hosts a postgres database
 1. open a terminal and go to the database folder.
 
 #### on Windows Powershell
-2. run the command: Get-Content cookbook_dump.sql | docker exec -i cookbook-db psql -U postgres -d cookbook
+2. run the command: 
+```PowerShell
+Get-Content cookbook_dump.sql | docker exec -i cookbook-db psql -U postgres -d cookbook
+```
 
 #### on Bash
-2. run the command: docker exec -i cookbook-db psql -U postgres -d cookbook < cookbook_dump.sql
+2. run the command: 
+```Shell
+docker exec -i cookbook-db psql -U postgres -d cookbook < cookbook_dump.sql
+```
 
 ## API Endpoints
 You can make requests to the endpoints using either Postman or cURL or a similar software. GET requests can also be made inside a normal browser.
@@ -32,20 +44,23 @@ You can make requests to the endpoints using either Postman or cURL or a similar
 ### GET ingredient
 Returns a list of existing ingredients in the database.
 
-```HTTP GET api/ingredients
+```HTTP
 localhost:8080/api/ingredients
 ```
 
 You can also search for ingredients by id.
 
-```HTTP GET api/ingredients{:id}
+```HTTP
 localhost:8080/api/ingredients/<id>
 ```
 
 ### POST ingredient
 Creates a new ingredient in the database. 
 
-```HTTP POST api/ingredient
+```HTTP
+localhost:8080/api/ingredients
+```
+```JSON
 {
   "name": "banana",
   "category": "FRUIT"
@@ -55,10 +70,10 @@ Creates a new ingredient in the database.
 ### PUT ingredient
 Modify an ingredient in the database.
 
-```HTTP PUT api/ingredient/{:id}
+```HTTP
 localhost:8080/api/ingredients/<id>
-
-JSON request body:
+```
+```JSON
 {
   "name": "strawberry",
   "category": "FRUIT"
@@ -66,44 +81,56 @@ JSON request body:
 ```
 
 ### DELETE ingredient
-deletes an ingredient from the database and also removes it from all recipes it was linked in.
+Deletes an ingredient from the database and also removes it from all recipes it was linked in.
 
-```HTTP DELETE api/ingredient/{:id}
+```HTTP
 localhost:8080/api/ingredients/<id>
 ```
 
 ### GET recipe
-```HTTP GET api/recipes
+```HTTP
 http://localhost:8080/api/recipes
 ```
 
-you can also search for recipes by id.
-```HTTP GET api/recipes{:id}
+You can also search for recipes by id.
+```HTTP
 localhost:8080/api/recipes/<id>
 ```
 
-or use filters such as includeIngredients and excludeIngredients (seperate include and exlude multiple ingredients by comma), keyword (to search the instructions for a keyword), or isVegetarian (for (non-) vegetarian recipes only).
-```HTTP GET includeIngredients
+Or use filters such as includeIngredients and excludeIngredients (seperate include and exlude multiple ingredients by comma), keyword (to search the instructions for a keyword), or isVegetarian (for (non-) vegetarian recipes only).
+
+?includeIngredients=<list>
+```HTTP 
 http://localhost:8080/api/recipes/filter?includeIngredients=salt
 ```
-```HTTP GET excludeIngredients
+
+?excludeIngredients=<list>
+```HTTP 
 http://localhost:8080/api/recipes/filter?excludeIngredients=salt
 ```
-```HTTP GET keyword
+
+?keyword=<text>
+```HTTP
 http://localhost:8080/api/recipes/filter?keyword=oven
 ```
-```HTTP GET isVegetarian
+
+?isVegetarian=<boolean>
+```HTTP
 http://localhost:8080/api/recipes/filter?isVegetarian=true
 ```
-```HTTP GET combined
+
+Combining filters
+```HTTP
 http://localhost:8080/api/recipes/filter?includeIngredients=sugar&excludeIngredients=milk&keyword=oven&isVegetarian=false
 ```
 
 ### POST recipe
 Creates a new recipe with existing ingredients in the database.
-```HTTP POST api/recipes
+```HTTP
 http://localhost:8080/api/recipes
+```
 
+```JSON
 {
   "name": "Sweet Bread",
   "servings": 4,
@@ -127,9 +154,11 @@ http://localhost:8080/api/recipes
 
 ### PUT recipe
 Updates an existing recipe.
-```HTTP PUT api/recipes/{:id}
+```HTTP
 http://localhost:8080/api/recipes/<id>
+```
 
+```JSON
 {
   "name": "Salty Bread",
   "servings": 4,
@@ -153,6 +182,6 @@ http://localhost:8080/api/recipes/<id>
 
 ### DELETE recipe
 Deletes an existing recipe.
-```HTTP DELETE api/recipes/{:id}
+```HTTP
 localhost:8080/api/ingredients/<id>
 ```
