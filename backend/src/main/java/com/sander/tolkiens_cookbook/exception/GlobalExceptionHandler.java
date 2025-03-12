@@ -83,4 +83,18 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body("An unexpected error occurred.");
     }
+
+    /**
+     * Handles illegal argument exceptions, when for example a duplicate database entry is attempted.
+     *
+     * @param ex the IllegalArgumentException containing argument errors
+     * @return a 400 BAD REQUEST response with the validation error message
+     */
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ex.getMessage());
+    }
 }

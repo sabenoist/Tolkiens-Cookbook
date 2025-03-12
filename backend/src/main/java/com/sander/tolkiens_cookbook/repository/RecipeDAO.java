@@ -124,7 +124,7 @@ public class RecipeDAO {
         Recipe existingRecipe = recipeRepository.findById(recipeId)
                 .orElseThrow(() -> new ResourceNotFoundException("Recipe not found with ID: " + recipeId));
 
-        // update recipe fields except ingredients
+        // update recipe fields except ingredients list
         existingRecipe.setName(updatedRecipe.getName());
         existingRecipe.setServings(updatedRecipe.getServings());
         existingRecipe.setInstructions(updatedRecipe.getInstructions());
